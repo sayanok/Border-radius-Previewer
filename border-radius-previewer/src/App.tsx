@@ -42,14 +42,8 @@ const App: React.FC = () => {
   }
 
   function copyTextarea(): void {
-    // var copyText = document.getElementById("boxStyle");
-    // // Select the text field
-    // copyText?.select();
-    //  // Copy the text inside the text field
-    // navigator.clipboard.writeText(copyText.value);
-    // // Alert the copied text
-    // alert("Copied the text: " + copyText.value);
-    // }
+    const copyText = document.getElementById("text") as HTMLInputElement;
+    navigator.clipboard.writeText(copyText.value).then(() => alert("Copied the text: " + copyText.value));
   }
 
   return (
@@ -76,6 +70,7 @@ const App: React.FC = () => {
           Rounded corners!
         </p>
         <textarea
+          id="text"
           rows={3}
           cols={80}
           value={
@@ -91,7 +86,7 @@ const App: React.FC = () => {
           readOnly
         ></textarea>
 
-        <button onClick={(e) => copyTextarea()}>Copy text</button>
+        <button onClick={() => copyTextarea()}>Copy text</button>
       </div>
     </>
   );
