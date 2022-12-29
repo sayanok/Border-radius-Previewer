@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 
 const App: React.FC = () => {
-  const [upperLeft, setUpperLeft] = useState<string>("");
-  const [upperRight, setUpperRight] = useState<string>("");
-  const [lowerLeft, setLowerLeft] = useState<string>("");
-  const [lowerRight, setLowerRight] = useState<string>("");
+  const [upperLeft, setUpperLeft] = useState<string>("0px ");
+  const [upperRight, setUpperRight] = useState<string>("0px ");
+  const [lowerLeft, setLowerLeft] = useState<string>("0px ");
+  const [lowerRight, setLowerRight] = useState<string>("0px ");
+  const [roundedCornersCss, setRoundCornersCss] = useState<string>("0px 0px 0px 0px");
+  const [backgroundColor, setBackgroundColor] = useState<string>("rgb(103, 143, 141)");
+  const [padding, setPadding] = useState<string>("100px");
 
-  useEffect(() => {
-    setUpperLeft("10px ");
-    setUpperRight("10px ");
-    setLowerLeft("10px ");
-    setLowerRight("10px ");
-  }, []);
+  function onChangeHandler(id: string, value: string): void {
+    setBorderRadiuses(id, value);
+    setTextarea();
+  }
 
-  function onChangeHandler(id: string, value: string) {
+  function setBorderRadiuses(id: string, value: string): void {
     if (id === "upperLeft") {
       setUpperLeft(value + "px ");
     } else if (id === "upperRight") {
@@ -25,28 +26,73 @@ const App: React.FC = () => {
     }
   }
 
+  function setTextarea(): void {
+    const hoge = document.querySelector("p");
+    const compStyles = window.getComputedStyle(hoge!);
+    const target = document.getElementById("boxStyle");
+    const config = { attributes: true, childList: false, subtree: false };
+
+    const observer = new MutationObserver((mutations) => {
+      setRoundCornersCss(compStyles.getPropertyValue("border-radius"));
+      setBackgroundColor(compStyles.getPropertyValue("background-color"));
+      setPadding(compStyles.getPropertyValue("padding"));
+    });
+
+    observer.observe(target!, config);
+  }
+
+  function copyTextarea(): void {
+    // var copyText = document.getElementById("boxStyle");
+    // // Select the text field
+    // copyText?.select();
+    //  // Copy the text inside the text field
+    // navigator.clipboard.writeText(copyText.value);
+    // // Alert the copied text
+    // alert("Copied the text: " + copyText.value);
+    // }
+  }
+
   return (
-    <div className="App">
-      <form>
-        <label>左上</label>
-        <input id="upperLeft" onChange={(e) => onChangeHandler(e.target.id, e.target.value)}></input>
-        <label>右上</label>
-        <input id="upperRight" onChange={(e) => onChangeHandler(e.target.id, e.target.value)}></input>
-        <label>左下</label>
-        <input id="lowerLeft" onChange={(e) => onChangeHandler(e.target.id, e.target.value)}></input>
-        <label>右下</label>
-        <input id="lowerRight" onChange={(e) => onChangeHandler(e.target.id, e.target.value)}></input>
-      </form>
-      <p
-        style={{
-          borderRadius: upperLeft + upperRight + lowerRight + lowerLeft,
-          backgroundColor: "#678F8D",
-          padding: "100px",
-        }}
-      >
-        Rounded corners!
-      </p>
-    </div>
+    <>
+      <div className="App">
+        <form>
+          <label>左上</label>
+          <input id="upperLeft" onChange={(e) => onChangeHandler(e.target.id, e.target.value)} type="number"></input>
+          <label>右上</label>
+          <input id="upperRight" onChange={(e) => onChangeHandler(e.target.id, e.target.value)} type="number"></input>
+          <label>左下</label>
+          <input id="lowerLeft" onChange={(e) => onChangeHandler(e.target.id, e.target.value)} type="number"></input>
+          <label>右下</label>
+          <input id="lowerRight" onChange={(e) => onChangeHandler(e.target.id, e.target.value)} type="number"></input>
+        </form>
+        <p
+          id="boxStyle"
+          style={{
+            borderRadius: upperLeft + upperRight + lowerRight + lowerLeft,
+            backgroundColor: "#678F8D",
+            padding: "100px",
+          }}
+        >
+          Rounded corners!
+        </p>
+        <textarea
+          rows={3}
+          cols={80}
+          value={
+            "border-radius:" +
+            roundedCornersCss +
+            "\n" +
+            "background-color:" +
+            backgroundColor +
+            "\n" +
+            "padding:" +
+            padding
+          }
+        ></textarea>
+
+        <button onClick={(e) => copyTextarea()}>Copy text</button>
+      </div>
+    </>
   );
 };
 
