@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const App: React.FC = () => {
   const [upperLeft, setUpperLeft] = useState<string>("0px ");
@@ -27,17 +27,17 @@ const App: React.FC = () => {
   }
 
   function setTextarea(): void {
-    const hoge = document.querySelector("p");
-    const compStyles = window.getComputedStyle(hoge!);
-    const target = document.getElementById("boxStyle");
-    const config = { attributes: true, childList: false, subtree: false };
+    const para = document.querySelector("p");
+    const compStyles = window.getComputedStyle(para!);
 
-    const observer = new MutationObserver((mutations) => {
+    const observer = new MutationObserver(() => {
       setRoundCornersCss(compStyles.getPropertyValue("border-radius"));
       setBackgroundColor(compStyles.getPropertyValue("background-color"));
       setPadding(compStyles.getPropertyValue("padding"));
     });
 
+    const target = document.getElementById("boxStyle");
+    const config = { attributes: true, childList: false, subtree: false };
     observer.observe(target!, config);
   }
 
@@ -88,6 +88,7 @@ const App: React.FC = () => {
             "padding:" +
             padding
           }
+          readOnly
         ></textarea>
 
         <button onClick={(e) => copyTextarea()}>Copy text</button>
