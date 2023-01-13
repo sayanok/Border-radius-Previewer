@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 
 const App: React.FC = () => {
-  const [upperLeft, setUpperLeft] = useState<string>("0px ");
-  const [upperRight, setUpperRight] = useState<string>("0px ");
-  const [lowerLeft, setLowerLeft] = useState<string>("0px ");
-  const [lowerRight, setLowerRight] = useState<string>("0px ");
+  const [upperLeft, setUpperLeft] = useState(0);
+  const [upperRight, setUpperRight] = useState(0);
+  const [lowerLeft, setLowerLeft] = useState(0);
+  const [lowerRight, setLowerRight] = useState(0);
   const [roundedCornersCss, setRoundCornersCss] = useState<string>("0px 0px 0px 0px");
   const [backgroundColor, setBackgroundColor] = useState<string>("rgb(103, 143, 141)");
   const [padding, setPadding] = useState<string>("100px");
 
   function onChangeHandler(id: string, value: string): void {
-    setBorderRadiuses(id, value);
+    setBorderRadiuses(id, Number(value));
     setTextarea();
   }
 
-  function setBorderRadiuses(id: string, value: string): void {
+  function setBorderRadiuses(id: string, value: number): void {
     if (id === "upperLeft") {
-      setUpperLeft(value + "px ");
+      setUpperLeft(value);
     } else if (id === "upperRight") {
-      setUpperRight(value + "px ");
+      setUpperRight(value);
     } else if (id === "lowerLeft") {
-      setLowerLeft(value + "px ");
+      setLowerLeft(value);
     } else if (id === "lowerRight") {
-      setLowerRight(value + "px ");
+      setLowerRight(value);
     }
   }
 
@@ -62,7 +62,10 @@ const App: React.FC = () => {
         <p
           id="boxStyle"
           style={{
-            borderRadius: upperLeft + upperRight + lowerRight + lowerLeft,
+            borderTopLeftRadius: upperLeft,
+            borderTopRightRadius: upperRight,
+            borderBottomLeftRadius: lowerLeft,
+            borderBottomRightRadius: lowerRight,
             backgroundColor: "#678F8D",
             padding: "100px",
           }}
