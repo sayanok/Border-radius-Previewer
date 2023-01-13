@@ -6,8 +6,6 @@ const App: React.FC = () => {
   const [lowerLeft, setLowerLeft] = useState(0);
   const [lowerRight, setLowerRight] = useState(0);
   const [roundedCornersCss, setRoundCornersCss] = useState<string>("0px 0px 0px 0px");
-  const [backgroundColor, setBackgroundColor] = useState<string>("rgb(103, 143, 141)");
-  const [padding, setPadding] = useState<string>("100px");
 
   function onChangeHandler(id: string, value: string): void {
     setBorderRadiuses(id, Number(value));
@@ -32,8 +30,6 @@ const App: React.FC = () => {
 
     const observer = new MutationObserver(() => {
       setRoundCornersCss(compStyles.getPropertyValue("border-radius"));
-      setBackgroundColor(compStyles.getPropertyValue("background-color"));
-      setPadding(compStyles.getPropertyValue("padding"));
     });
 
     const target = document.getElementById("boxStyle");
@@ -41,9 +37,9 @@ const App: React.FC = () => {
     observer.observe(target!, config);
   }
 
+  const textAreaValue = `border-radius: ${upperLeft}px ${upperRight}px ${lowerLeft}px ${lowerRight}px`;
   function copyTextarea(): void {
-    const copyText = document.getElementById("text") as HTMLInputElement;
-    navigator.clipboard.writeText(copyText.value).then(() => alert("Copied the text: " + copyText.value));
+    navigator.clipboard.writeText(textAreaValue).then(() => alert("Copied the text: " + textAreaValue));
   }
 
   return (
@@ -72,22 +68,7 @@ const App: React.FC = () => {
         >
           Rounded corners!
         </p>
-        <textarea
-          id="text"
-          rows={3}
-          cols={80}
-          value={
-            "border-radius:" +
-            roundedCornersCss +
-            "\n" +
-            "background-color:" +
-            backgroundColor +
-            "\n" +
-            "padding:" +
-            padding
-          }
-          readOnly
-        ></textarea>
+        <textarea id="text" rows={3} cols={80} value={"border-radius:" + roundedCornersCss} readOnly></textarea>
 
         <button onClick={() => copyTextarea()}>Copy text</button>
       </div>
